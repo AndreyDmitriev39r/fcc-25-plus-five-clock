@@ -1,7 +1,14 @@
+import Heading from "./Heading"
+import LengthSettings from "./LengthSettings"
+import SessionControl from "./SessionControl"
+
 function App() {
   return (
-    <div className="App">
-      <h1 className="underline">25 + 5 Clock coming soon</h1>
+    <div className="App flex flex-row flex-wrap gap-6 justify-center">
+      <Heading />
+      <LengthSettings name="session"/>
+      <LengthSettings name="break"/>
+      <SessionControl />
     </div>
   )
 }
