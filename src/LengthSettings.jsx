@@ -2,12 +2,12 @@ import Button from "./Button";
 
 const LengthSettings = ({name}) => {
   const bgColor = name === 'session'
-    ? "bg-blue-200"
-    : "bg-amber-200";
+    ? "bg-blue-300"
+    : "bg-amber-300";
   return (
     <div
       id={`${name}-settings-container`}
-      className='w-1/4 min-w-[175px] max-w-[250px] flex flex-col gap-1 p-2 bg-lime-300 rounded-lg'
+      className='w-1/4 min-w-[175px] max-w-[250px] flex flex-col gap-1 p-2 rounded-lg'
     >
       <h3 id={`${name}-label`}
         className={`${bgColor} text-center text-xl font-medium italic capitalize rounded-md`}
