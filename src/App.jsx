@@ -4,11 +4,15 @@ import SessionControl from "./SessionControl"
 
 function App() {
   return (
-    <div className="App flex flex-row flex-wrap gap-6 justify-center border border-black">
+    <div className="App max-w-[1000px] mx-auto flex flex-col flex-wrap gap-5 justify-center">
       <Heading />
-      <LengthSettings name="session"/>
-      <LengthSettings name="break"/>
       <SessionControl />
+      <div id="settings-container"
+        className="flex flex-row justify-center gap-2"
+      >
+        <LengthSettings name="session"/>
+        <LengthSettings name="break"/>      
+      </div>
     </div>
   )
 }
