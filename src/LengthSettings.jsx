@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 const LengthSettings = ({name}) => {
   return (
     <div
@@ -14,8 +16,8 @@ const LengthSettings = ({name}) => {
       >
         {name === 'session' ? '25' : '5'}
       </h3>
-      <button id={`${name}-increment`}>+</button>
-      <button id={`${name}-decrement`}>-</button> 
+      <Button id={`${name}-increment`} children='+'/>
+      <Button id={`${name}-decrement`} children='-' />
     </div>
   )
 }
