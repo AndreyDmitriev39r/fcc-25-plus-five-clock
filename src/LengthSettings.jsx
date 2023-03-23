@@ -1,6 +1,6 @@
 import SetLengthButton from "./SetLengthButton";
 
-const LengthSettings = ({name}) => {
+const LengthSettings = ({name, duration, changeDuration}) => {
   const bgColor = name === 'session'
     ? "bg-blue-300"
     : "bg-amber-300";
@@ -21,15 +21,19 @@ const LengthSettings = ({name}) => {
         <SetLengthButton
           id={`${name}-increment`}
           children='+'
+          name={name}
+          changeDuration={changeDuration}
         />
         <h3 id={`${name}-length`}
           className={`${bgColor} w-10 h-10 self-center flex justify-center items-center mt-1 rounded-full border border-lime-500 text-xl font-bold italic`}
         >
-          {name === 'session' ? '25' : '5'}
+          {duration}
         </h3>
         <SetLengthButton
           id={`${name}-decrement`}
           children='-'
+          name={name}
+          changeDuration={changeDuration}
         />
       </div>
     </div>
