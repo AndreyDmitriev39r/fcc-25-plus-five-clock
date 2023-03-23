@@ -65,14 +65,17 @@ function App() {
     })
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     let timerInt;
     if (isRunning === "running") {
       timerInt = setInterval(timerUpdate, 1000);
+    } else if (isRunning === "paused") {      
+      clearInterval(timerInt);
+      timerInt = null;
     }
     return () => {
-      timerInt = null;
       clearInterval(timerInt);
+      timerInt = null;      
     }
   }, [isRunning])
 
