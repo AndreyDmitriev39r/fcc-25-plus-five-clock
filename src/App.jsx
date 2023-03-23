@@ -9,23 +9,43 @@ function App() {
   const defaultDuration = {
     session: 25,
     break: 5,
-  }  
+  }
 
+  const defaultTimeLeft = {
+    minutes: "25",
+    seconds: "00"
+  }
+
+  const [isRunning, setIsRunning] = useState(() => "stopped");
+
+  const [isSession, setIsSession] = useState(() => true);
+  
   const [duration, setDuration] = useState(() => defaultDuration);
+  
+  const [timeLeft, setTimeLeft] = useState(() => defaultTimeLeft)
+  
+  const reset = () => {
+    setDuration(defaultDuration);
+    setTimeLeft(defaultTimeLeft);
+    setIsSession(true);
+    setIsRunning("stopped");
+  }
 
-  const [timeLeft, setTimeLeft] = useState(() => `25:00`)
+  const changeDuration = (operator, name) => {
 
-  const changeDuration = (operator, name) => {    
     const updatedDuration = operator === "+"
       ? duration[name] + 1
       : duration[name] - 1;
     if (updatedDuration > 60 || updatedDuration < 1) return;
     setDuration(prevDuration => ({...prevDuration, [name] : updatedDuration}));
-  }
-
-  const reset = () => {
-    setDuration(defaultDuration);
-    setTimeLeft(`25:00`);
+    
+    if (isRunning === "stopped") {
+      if (name === "session" && isSession) {
+        setTimeLeft({minutes: updatedDuration, seconds: '00'})
+      } else if (name==="break" && !isSession) {
+        setTimeLeft({minutes: updatedDuration, seconds: '00'})
+      }      
+    }
   }
 
   return (
@@ -33,6 +53,7 @@ function App() {
       <Heading />
       <SessionControl
         timeLeft={timeLeft}
+        isSession={isSession}
         reset={reset}
       />
       <div id="settings-container"
