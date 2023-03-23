@@ -13,7 +13,7 @@ function App() {
 
   const [duration, setDuration] = useState(() => defaultDuration);
 
-  const [timeLeft, settimeLeft] = useState(() => `${duration.session}:00`)
+  const [timeLeft, setTimeLeft] = useState(() => `25:00`)
 
   const changeDuration = (operator, name) => {    
     const updatedDuration = operator === "+"
@@ -23,11 +23,17 @@ function App() {
     setDuration(prevDuration => ({...prevDuration, [name] : updatedDuration}));
   }
 
+  const reset = () => {
+    setDuration(defaultDuration);
+    setTimeLeft(`25:00`);
+  }
+
   return (
     <div className="App max-w-[1000px] mx-auto flex flex-col flex-wrap gap-5 justify-center">
       <Heading />
       <SessionControl
         timeLeft={timeLeft}
+        reset={reset}
       />
       <div id="settings-container"
         className="flex flex-row justify-center gap-2"

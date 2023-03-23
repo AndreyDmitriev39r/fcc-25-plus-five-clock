@@ -1,7 +1,7 @@
 import StartStopButton from "./StartStopButton";
 import ResetButton from "./ResetButton";
 
-const SessionControl = ({timeLeft, reset}) => {
+const SessionControl = ({timeLeft, reset}) => {  
   return (
     <div id="session-control-container"
       className="self-center w-3/5 flex flex-col gap-3">
@@ -21,7 +21,8 @@ const SessionControl = ({timeLeft, reset}) => {
         </h3>
         <ResetButton
           id="reset"
-          children="Reset"          
+          children="Reset"
+          reset={reset}          
         /> 
       </div>      
     </div>
