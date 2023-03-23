@@ -6,6 +6,8 @@ import SessionControl from "./SessionControl"
 
 function App() {
 
+  let timerInt = null;
+
   const defaultDuration = {
     session: 25,
     break: 5,
@@ -57,7 +59,16 @@ function App() {
   }
 
   const timerUpdate = () => {    
-    setTimeLeft(prevTimeLeft => {      
+    setTimeLeft(prevTimeLeft => {
+      if (prevTimeLeft.minutes === "00" && prevTimeLeft.seconds === "00") {        
+        setTimeLeft({
+          minutes: isSession ? duration.break : duration.session,
+          seconds: "00",
+        })
+        setIsSession(prevIsSession => !prevIsSession);
+        clearInterval(timerInt);
+        timerInt = setInterval(timerUpdate, 1000);
+      }
       return prevTimeLeft.seconds === "00"
         ? {minutes: prevTimeLeft.minutes - 1 < 10 ? "0" + (prevTimeLeft.minutes - 1) : prevTimeLeft.minutes - 1,
            seconds: "59"}
@@ -66,7 +77,7 @@ function App() {
   }
 
   useEffect(() => {    
-    let timerInt;
+    
     if (isRunning === "running") {
       timerInt = setInterval(timerUpdate, 1000);
     } else if (isRunning === "paused") {      
