@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import Heading from "./Heading"
 import LengthSettings from "./LengthSettings"
@@ -48,13 +48,43 @@ function App() {
     }
   }
 
+  const timerControl = () => {
+    setIsRunning(prevIsRunning =>
+      prevIsRunning === "stopped" ? "running"
+        : prevIsRunning === "running" ? "paused"
+        : "running"
+    )
+  }
+
+  const timerUpdate = () => {    
+    setTimeLeft(prevTimeLeft => {      
+      return prevTimeLeft.seconds === "00"
+        ? {minutes: prevTimeLeft.minutes - 1 < 10 ? "0" + (prevTimeLeft.minutes - 1) : prevTimeLeft.minutes - 1,
+           seconds: "59"}
+        : {...prevTimeLeft, seconds: prevTimeLeft.seconds - 1 < 10  ? "0" + (prevTimeLeft.seconds - 1) : prevTimeLeft.seconds - 1}
+    })
+  }
+
+  useEffect(() => {
+    let timerInt;
+    if (isRunning === "running") {
+      timerInt = setInterval(timerUpdate, 1000);
+    }
+    return () => {
+      timerInt = null;
+      clearInterval(timerInt);
+    }
+  }, [isRunning])
+
   return (
     <div className="App max-w-[1000px] mx-auto flex flex-col flex-wrap gap-5 justify-center">
       <Heading />
       <SessionControl
         timeLeft={timeLeft}
         isSession={isSession}
+        isRunning={isRunning}
         reset={reset}
+        timerControl={timerControl}
       />
       <div id="settings-container"
         className="flex flex-row justify-center gap-2"
@@ -74,4 +104,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
