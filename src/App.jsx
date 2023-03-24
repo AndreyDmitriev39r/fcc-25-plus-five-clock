@@ -26,6 +26,7 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(() => defaultTimeLeft)
   
   const reset = () => {
+    beepRef.current.load();
     setDuration(defaultDuration);
     setTimeLeft(defaultTimeLeft);
     setIsSession(true);
@@ -60,7 +61,7 @@ function App() {
   useEffect(() => {    
     if (isRunning === "running") {
       timerInt = setInterval(() => {        
-        setTimeLeft(prevTimeLeft => prevTimeLeft - 1)}, 1);
+        setTimeLeft(prevTimeLeft => prevTimeLeft - 1)}, 1000);
     } else if (isRunning === "paused" || isRunning === "stopped") {      
       clearInterval(timerInt);
       timerInt = null;
@@ -74,18 +75,22 @@ function App() {
   useEffect(() => {    
     if (timeLeft === 0) {
       setIsRunning('stopped')
-      if (isSession) {
-        setTimeLeft(duration.break * 60);
-      } else if (!isSession) {
-        setTimeLeft(duration.session * 60);
-      }
-      setIsSession(prevIsSession => !prevIsSession)
-      setIsRunning('running');
+      setTimeout(() => {
+        beepRef.current.play();
+        if (isSession) {
+          setTimeLeft(duration.break * 60);
+        } else if (!isSession) {
+          setTimeLeft(duration.session * 60);
+        }
+        setIsSession(prevIsSession => !prevIsSession)
+        setIsRunning('running');
+      }, 100)
     }
   }, [timeLeft])
 
   return (
     <div className="App max-w-[1000px] mx-auto flex flex-col flex-wrap gap-5 justify-center">
+      <audio id="beep" src="https://www.pacdv.com/sounds/interface_sound_effects/sound10.mp3" type="audio/mp3" ref={beepRef}></audio>
       <Heading />
       <SessionControl
         timeLeft={timeLeft}
