@@ -13,10 +13,7 @@ function App() {
     break: 5,
   }
 
-  const defaultTimeLeft = {
-    minutes: "25",
-    seconds: "00"
-  }
+  const defaultTimeLeft = 1500;
 
   const [isRunning, setIsRunning] = useState(() => "stopped");
 
@@ -43,9 +40,9 @@ function App() {
     
     if (isRunning === "stopped") {
       if (name === "session" && isSession) {
-        setTimeLeft({minutes: updatedDuration, seconds: '00'})
+        setTimeLeft(updatedDuration * 60)
       } else if (name==="break" && !isSession) {
-        setTimeLeft({minutes: updatedDuration, seconds: '00'})
+        setTimeLeft(updatedDuration * 60)
       }      
     }
   }
@@ -59,21 +56,7 @@ function App() {
   }
 
   const timerUpdate = () => {    
-    setTimeLeft(prevTimeLeft => {
-      if (prevTimeLeft.minutes === "00" && prevTimeLeft.seconds === "00") {        
-        setTimeLeft({
-          minutes: isSession ? duration.break : duration.session,
-          seconds: "00",
-        })
-        setIsSession(prevIsSession => !prevIsSession);
-        clearInterval(timerInt);
-        timerInt = setInterval(timerUpdate, 1000);
-      }
-      return prevTimeLeft.seconds === "00"
-        ? {minutes: prevTimeLeft.minutes - 1 < 10 ? "0" + (prevTimeLeft.minutes - 1) : prevTimeLeft.minutes - 1,
-           seconds: "59"}
-        : {...prevTimeLeft, seconds: prevTimeLeft.seconds - 1 < 10  ? "0" + (prevTimeLeft.seconds - 1) : prevTimeLeft.seconds - 1}
-    })
+    setTimeLeft(prevTimeLeft => prevTimeLeft - 1);
   }
 
   useEffect(() => {    
