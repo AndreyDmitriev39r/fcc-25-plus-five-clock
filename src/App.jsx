@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 import Heading from "./Heading"
 import LengthSettings from "./LengthSettings"
 import SessionControl from "./SessionControl"
 
 function App() {
+
+  const beepRef = useRef(null);
 
   let timerInt = null;
 
@@ -53,17 +55,13 @@ function App() {
         : prevIsRunning === "running" ? "paused"
         : "running"
     )
-  }
-
-  const timerUpdate = () => {    
-    setTimeLeft(prevTimeLeft => prevTimeLeft - 1);
-  }
+  }  
 
   useEffect(() => {    
-    
     if (isRunning === "running") {
-      timerInt = setInterval(timerUpdate, 1000);
-    } else if (isRunning === "paused") {      
+      timerInt = setInterval(() => {        
+        setTimeLeft(prevTimeLeft => prevTimeLeft - 1)}, 1);
+    } else if (isRunning === "paused" || isRunning === "stopped") {      
       clearInterval(timerInt);
       timerInt = null;
     }
@@ -72,6 +70,19 @@ function App() {
       timerInt = null;      
     }
   }, [isRunning])
+
+  useEffect(() => {    
+    if (timeLeft === 0) {
+      setIsRunning('stopped')
+      if (isSession) {
+        setTimeLeft(duration.break * 60);
+      } else if (!isSession) {
+        setTimeLeft(duration.session * 60);
+      }
+      setIsSession(prevIsSession => !prevIsSession)
+      setIsRunning('running');
+    }
+  }, [timeLeft])
 
   return (
     <div className="App max-w-[1000px] mx-auto flex flex-col flex-wrap gap-5 justify-center">
